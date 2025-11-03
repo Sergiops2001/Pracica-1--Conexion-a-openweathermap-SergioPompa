@@ -1,0 +1,51 @@
+<!-- Tiempo Actual -->
+@if (resultadosTiempo$ | async; as resultado) {
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Tiempo Actual en Madrid</h2>
+    <app-tiempo-actual-item [tiempoInfo]="{
+      ciudad: resultado.name,
+      temperatura: resultado.main.temp,
+      descripcion: resultado.weather[0].description,
+      icono: resultado.weather[0].icon,
+      viento: resultado.wind.speed
+    }"></app-tiempo-actual-item>
+  </div>
+}
+<!-- Paso 4: añadir el bloque de código para mostrar la predicción del tiempo -->
+<!-- Paso 6.2: Template Actualizado -->
+<!-- Forecast (Predicción) -->
+<!-- Forecast (Predicción) -->
+@if (resultadosForecast$ | async; as forecast) {
+  <div>
+    <h2 class="text-2xl font-bold mb-4">Próximos Días</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      @for (dia of agruparPorDia(forecast); track dia.fecha) {
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <!-- Fecha -->
+          <p class="font-semibold text-gray-700">
+            {{ dia.fecha | date:'EEE dd/MM' }}
+          </p>
+          
+          <!-- Icono del tiempo -->
+          <img 
+            [src]="'https://openweathermap.org/img/wn/' + dia.icono + '.png'" 
+            [alt]="dia.descripcion"
+            class="w-12 h-12 mx-auto my-2"
+          />
+          
+          <!-- Temperatura -->
+          <p class="text-xl font-bold">{{ dia.temperatura | number:'1.0-0' }}°C</p>
+          
+          <!-- Descripción -->
+          <p class="text-sm text-gray-600 capitalize">{{ dia.descripcion }}</p>
+          
+          <!-- Viento -->
+          <p class="text-xs text-gray-500 mt-2">
+            💨 {{ dia.viento | number:'1.1-1' }} m/s
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+}
+

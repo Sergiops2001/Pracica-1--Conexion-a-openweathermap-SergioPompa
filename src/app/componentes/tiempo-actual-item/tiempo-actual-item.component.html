@@ -1,0 +1,18 @@
+<ng-container *ngIf="tiempoInfo">
+  <div class="bg-slate-50 rounded-xl shadow-sm p-6 border border-slate-100 hover:bg-blue-50 transition-all duration-300">
+    <div class="flex items-center gap-6">
+      <div class="bg-white rounded-lg p-2">
+        <img
+          [src]="'https://openweathermap.org/img/wn/' + tiempoInfo.icono + '@2x.png'"
+          [alt]="tiempoInfo.descripcion || 'icono tiempo'"
+          class="w-16 h-16"
+        />
+      </div>
+      <div class="space-y-1">
+        <p class="font-semibold text-xl text-slate-800">{{ tiempoInfo.ciudad }}</p>
+        <p class="text-3xl font-medium text-slate-700">{{ tiempoInfo.temperatura | number:'1.0-0' }}°C</p>
+        <p class="text-sm text-slate-600 capitalize">{{ tiempoInfo.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+</ng-container>

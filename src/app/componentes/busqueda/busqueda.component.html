@@ -1,0 +1,66 @@
+<!-- Paso 4.1 hacemos el template basico de busqueda -->
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center mb-8 text-blue-800 uppercase">
+        Buscar Clima por Ciudad
+    </h1>
+    <!-- FORMULARIO DE BÚSQUEDA -->
+    <div class="flex gap-4 mb-8">
+<input
+    type="text"
+    [(ngModel)]="ciudadBuscada"   
+    (keyup.enter)="buscar()" 
+    placeholder="Escriba el nombre de la ciudad..."
+    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+/>
+        <button
+            (click)="buscar()"
+            [disabled]="cargando"
+            class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 disabled:bg-blue-300 transition-colors"
+        >
+            @if (cargando) {
+                Buscando...
+            } @else {
+                Buscar
+            }
+        </button>
+    </div>
+    <!-- Añadir Indicador de Carga y Mensajes de Error -->
+    <!-- MENSAJE DE ERROR -->
+    @if (error) {
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    }
+
+    <!-- INDICADOR DE CARGA -->
+    @if (cargando) {
+    <div class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <p class="mt-2 text-gray-600">Buscando información meteorológica...</p>
+    </div>
+    }
+    <!-- RESULTADOS -->
+    @if (resultados && !cargando) {
+    <div 
+    class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 cursor-pointer hover:shadow-xl transition-shadow"
+    [routerLink]="['/detalles', resultados.name]">
+        <h2 class="text-2xl font-bold mb-2 text-gray-800">
+        Clima en {{ resultados.name }}
+        </h2>
+        <p class="text-gray-600 mb-6">Resultados de la búsqueda</p>
+
+    <!-- REUTILIZAMOS EL COMPONENTE DE TIEMPO ACTUAL -->
+        <app-tiempo-actual-item 
+        [tiempoInfo]="{
+        ciudad: resultados.name,
+        temperatura: resultados.main.temp,
+        descripcion: resultados.weather[0].description,
+        icono: resultados.weather[0].icon,
+        viento: resultados.wind.speed
+        }">
+      </app-tiempo-actual-item>
+    </div>
+  }
+    
+
+</div>
