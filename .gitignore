@@ -41,6 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# txts de prueba
-detalles.txt
-favoritos.txt
+
+# Environment files
+src/environments/environments.ts

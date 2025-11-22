@@ -4,6 +4,7 @@ import { TiempoActualResponse } from '../../interfaces/tiempo';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, NgClass } from '@angular/common';
 import { TiempoActualItemComponent } from '../tiempo-actual-item/tiempo-actual-item.component';
+import { FavoritosService } from '../../servicios/favoritos.service';
 
 @Component({
   selector: 'app-detalles',
@@ -20,34 +21,51 @@ export class DetallesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tiempoService: TiempoServiceService
-  ){}
+    private tiempoService: TiempoServiceService,
+    private favoritosService: FavoritosService
+  ) { }
 
 
   ngOnInit(): void {
     //Obtener el parametro 'ciudad' usando snapshot 
     this.ciudad = this.route.snapshot.paramMap.get('ciudad') || '';
     // verificar si hay ciudad 
-    if (!this.ciudad){
+    if (!this.ciudad) {
       this.error = 'No hay ciudad'
       this.cargando = false;
       return;
     }
     //si hay ciudad llamar al servicio para obtener los datos 
     this.tiempoService.getTiempoPorCiudad(this.ciudad).subscribe({
-  // 3. Manejar la respuesta (guardar datos en this.datosTiempo)
-  next: (datos) => {
-    this.datosTiempo = datos;
-    this.cargando = false;
-  },
+      // 3. Manejar la respuesta (guardar datos en this.datosTiempo)
+      next: (datos) => {
+        this.datosTiempo = datos;
+        this.cargando = false;
+      },
 
-  // 4. Manejar errores (guardar mensaje en this.error)
-  error: (err) => {
-    this.error = 'No se pudieron obtener los detalles solicitados';
-    this.cargando = false; // desactivamos el indicador de carga;
+      // 4. Manejar errores (guardar mensaje en this.error)
+      error: (err) => {
+        this.error = 'No se pudieron obtener los detalles solicitados';
+        this.cargando = false; // desactivamos el indicador de carga;
+      }
+
+      // 5. Cambiar this.cargando a false en ambos casos
+
+    }
+    )
+  };
+
+
+  //Favoritos 
+  // método que usas en el template: (click)="toggleFavorito(resultados.name)"
+  toggleFavorito(ciudad: string) {
+    if (this.favoritosService.esFavorito(ciudad)) {
+      this.favoritosService.eliminarFavorito(ciudad);
+    } else {
+      this.favoritosService.agregarFavorito(ciudad);
+    }
   }
-
-  // 5. Cambiar this.cargando a false en ambos casos
-
+  esFavorito(ciudad: string): boolean {
+    return this.favoritosService.esFavorito(ciudad);
   }
-)}}
+}

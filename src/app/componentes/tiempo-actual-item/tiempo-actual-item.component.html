@@ -1,17 +1,37 @@
 <ng-container *ngIf="tiempoInfo">
-  <div class="bg-slate-50 rounded-xl shadow-sm p-6 border border-slate-100 hover:bg-blue-50 transition-all duration-300">
-    <div class="flex items-center gap-6">
-      <div class="bg-white rounded-lg p-2">
-        <img
-          [src]="'https://openweathermap.org/img/wn/' + tiempoInfo.icono + '@2x.png'"
-          [alt]="tiempoInfo.descripcion || 'icono tiempo'"
-          class="w-16 h-16"
-        />
+  <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100/50">
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+
+      <!-- Icono y Temperatura Principal -->
+      <div class="flex flex-col items-center bg-white rounded-2xl p-4 shadow-sm min-w-[140px]">
+        <img [src]="'https://openweathermap.org/img/wn/' + tiempoInfo.icono + '@4x.png'"
+          [alt]="tiempoInfo.descripcion || 'icono tiempo'" class="w-24 h-24 -my-2 drop-shadow-md" />
+        <p class="text-4xl font-bold text-slate-800 tracking-tight">{{ tiempoInfo.temperatura | number:'1.0-0' }}°</p>
       </div>
-      <div class="space-y-1">
-        <p class="font-semibold text-xl text-slate-800">{{ tiempoInfo.ciudad }}</p>
-        <p class="text-3xl font-medium text-slate-700">{{ tiempoInfo.temperatura | number:'1.0-0' }}°C</p>
-        <p class="text-sm text-slate-600 capitalize">{{ tiempoInfo.descripcion }}</p>
+
+      <!-- Detalles -->
+      <div class="flex-1 text-center sm:text-left space-y-4 w-full">
+        <div>
+          <h3 class="text-lg font-semibold text-slate-400 uppercase tracking-wider text-xs mb-1">Condición Actual</h3>
+          <p class="text-2xl font-medium text-slate-700 capitalize first-letter:uppercase">
+            {{ tiempoInfo.descripcion }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/60 rounded-xl p-3">
+            <p class="text-xs text-slate-500 font-semibold uppercase mb-1">Viento</p>
+            <div class="flex items-center justify-center sm:justify-start gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="font-bold text-slate-700">{{ tiempoInfo.viento }} m/s</span>
+            </div>
+          </div>
+          <!-- Aquí se podrían añadir más métricas si estuvieran disponibles en el objeto tiempoInfo -->
+        </div>
       </div>
     </div>
   </div>

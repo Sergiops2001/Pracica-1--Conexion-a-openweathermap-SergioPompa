@@ -47,7 +47,7 @@ getTiempoPorCiudad(ciudad: string): Observable<TiempoActualResponse> {
   return this.http.get<TiempoActualResponse>(url,{
       // parámetros de la petición que hemos determinado antes en tiempo.ts 
       params: {
-        q: `${ciudad},es`,
+        q: `${ciudad}`,
         units: 'metric',
         lang: 'es',
         appid: environment.OWM_API_KEY
